@@ -57,3 +57,5 @@ This function requires these permissions to run.
     ]
 }
 ```
+
+In order for instances to be shutdown you need to schedule a trigger. This can be whatever you like but the simplest is an AWS CLoudwatch event rule. e.g. Run every 1 or 5 minutes
