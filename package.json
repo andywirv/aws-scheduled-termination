@@ -4,10 +4,11 @@
   "description": "Stop EC2 Instances with a specific tag",
   "main": "stopTaggedEC2Instances.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "runlocal":"node localtest",
-    "zip": "zip function.zip package.json *.js  -r node_modules/* --exclude node_modules/aws-sdk/\\*",
-    "update_lambda": "./updateLambda.sh"
+    "create_lambda": "./createLambda.sh",
+    "runlocal": "node localtest",
+    "test": "echo \"Error: no test specified\" && exit 1",    
+    "update_lambda": "./updateLambda.sh",
+    "zip": "zip function.zip package.json *.js  -r node_modules/* --exclude node_modules/aws-sdk/\\*"
   },
   "author": "",
   "license": "ISC",
