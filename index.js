@@ -65,7 +65,7 @@ function processShutdownTag (instance, tagValue) {
   } else {
     // already stopped
     if (instance.State.Name === 'stopping' || instance.State.Name === 'stopped') {
-      console.log(instance.InstanceId + 'is already ' + instance.State.Name)
+      console.log(instance.InstanceId + ' is already ' + instance.State.Name)
     }
     // scheduled to shutdown in future
     if (instance.State.Name !== 'stopped' && taggedTime.isAfter(moment())) {
