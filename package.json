@@ -6,15 +6,16 @@
   "scripts": {
     "create_lambda": "./createLambda.sh",
     "runlocal": "node localtest",
-    "test": "echo \"Error: no test specified\" && exit 1",    
+    "test": "echo \"Error: no test specified\" && exit 1",
     "update_lambda": "./updateLambda.sh",
-    "zip": "zip function.zip package.json *.js  -r node_modules/* --exclude node_modules/aws-sdk/\\*"
+    "zip": "zip function.zip package.json *.js lib/* -r node_modules/* --exclude node_modules/aws-sdk/\\*"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "2.1.2",
     "aws-sdk": "2.7.4",
-    "moment": "2.16.0"
+    "moment": "2.16.0",
+    "request": "2.79.0"
   }
 }

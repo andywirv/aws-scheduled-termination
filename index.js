@@ -3,6 +3,8 @@ var AWS = require('aws-sdk')
 var moment = require('moment')
 var async = require('async')
 
+var notify = require('./lib/notify')
+
 AWS.config.region = 'eu-west-1'
 var ec2 = new AWS.EC2()
 var shutdownTag = 'scheduled_shutdown'
@@ -31,7 +33,7 @@ exports.handler = (event, context, callback) => {
       }
     }
     // initate stop for all instances in array instanceList
-    stopInstances(instanceList, function procesResponse (err, result) {
+    stopInstances(instanceList, function processResponse (err, result) {
       if (err) {
         callback(err)
       }
@@ -55,7 +57,7 @@ function getEC2TagValues (instance, keys) {
 
 function processShutdownTag (instance, tagValue) {
   if (!moment(tagValue).isValid()) {
-    console.log('tagValue was not converted into a timestamp')
+    notify.error(instance.InstanceId, 'tagValue was not converted into a timestamp')
     return false
   }
   var taggedTime = moment(tagValue)
@@ -65,11 +67,11 @@ function processShutdownTag (instance, tagValue) {
   } else {
     // already stopped
     if (instance.State.Name === 'stopping' || instance.State.Name === 'stopped') {
-      console.log(instance.InstanceId + ' is already ' + instance.State.Name)
+      notify.noaction(instance.InstanceId, instance.State.Name)
     }
     // scheduled to shutdown in future
-    if (instance.State.Name !== 'stopped' && taggedTime.isAfter(moment())) {
-      console.log(instance.InstanceId + ' : ' + 'scheduled to be shutdown in: ' + taggedTime.fromNow() + ' @ ' + taggedTime.format())
+    if (instance.State.Name !== 'stopped' && taggedTime.isAfter(timeNow)) {
+      notify.planned(instance.InstanceId, taggedTime)
     }
   }
   return false
@@ -77,13 +79,13 @@ function processShutdownTag (instance, tagValue) {
 
 function stopInstances (instanceList, callback) {
   async.eachOf(instanceList, function (item, key, callback) {
-    console.log('Stopping InstanceId: ' + item.id + ' : ' + item.name)
+    notify.stopping(item.id)
     ec2.stopInstances({InstanceIds: [item.id], DryRun: false}, function (err, data) {
       if (err) {
-        console.log('Error stopping: ' + item.id + ' : ' + err)
+        notify.error(item.id)
         callback(err)
       } else {
-        console.log('Stopped InstanceId: ' + item.id + ' : ' + (item.name || ''))
+        notify.stopped(item.id)
         callback(null, 'done')
       }
     })
