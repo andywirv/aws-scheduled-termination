@@ -15,7 +15,7 @@
   "dependencies": {
     "async": "2.1.2",
     "aws-sdk": "2.7.4",
-    "moment": "2.16.0",
+    "moment": "2.19.3",
     "request": "2.79.0"
   }
 }
