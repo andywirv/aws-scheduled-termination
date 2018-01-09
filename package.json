@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "2.1.2",
-    "aws-sdk": "2.7.4",
+    "aws-sdk": "2.178.0",
     "moment": "2.19.3",
     "request": "2.81.0"
   }
